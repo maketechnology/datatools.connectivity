@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardSelectionPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -118,7 +119,7 @@ public class CPWizardSelectionPage extends WizardSelectionPage {
 				for (Iterator itr = wizardCats.iterator(); itr.hasNext();) {
 					wizardProvider = (IProfileWizardProvider) itr.next();
 					if (wizardProvider.getCategory().equals(wizardCategory)) {
-						wizardNodes.add(new CPCategoryWizardNode(wizardProvider));
+						wizardNodes.add(new CPWizardNode(wizardProvider));
 					}
 				}
 			}
