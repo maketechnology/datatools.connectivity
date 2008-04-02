@@ -6,4 +6,3 @@ utestreports
 vss*.scc
 plugin_*.properties
 download
-build*.xml
