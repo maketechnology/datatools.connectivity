@@ -127,6 +127,7 @@ public class ColumnTable {
 		
 		page = filterWizardPage;
 		connFilter = connectionFilter;
+		isAnded = connFilter.isMeetsAllConditions();
 		
 		GridLayout compositeLayout = new GridLayout(3, false);
 		composite.setLayout(compositeLayout);
