@@ -121,6 +121,8 @@ public class ColumnTable {
 	
 	private boolean isAnded = true;
 	
+	private CommonTableCursor cursor;
+	
 	public ColumnTable(Composite composite,
 			ConnectionFilterPropertyPage filterWizardPage,
 			ConnectionFilter connectionFilter) {
@@ -274,29 +276,6 @@ public class ColumnTable {
 				m_columnTable, predicatesArray, SWT.READ_ONLY);
 		editors.add(predicateEditor);
 		TextCellEditor valueEditor = new TextCellEditor(m_columnTable);
-		// /////////////////////////////////////////////////////////////////////
-		//final Table table = m_columnTable;
-
-		// value text field
-		
-		//final TextCellEditor editor = valueEditor;
-		/*valueEditor.addListener(new ICellEditorListener() {
-
-			public void applyEditorValue() {
-				((Predicate) connFilter.getPredicatesCollection().get(
-						table.getSelectionIndex())).setValue(editor.getValue()
-						.toString());
-			}
-
-			public void cancelEditor() {
-			}
-
-			public void editorValueChanged(boolean oldValidState,
-					boolean newValidState) {
-			}
-		});*/
-
-		// ///////////////////////////////////////////////////////////////
 		editors.add(valueEditor);
 
 		// table viewer
@@ -313,6 +292,7 @@ public class ColumnTable {
 		}
 		
 		m_columnTableViewer.setCellModifier(new ColumnCellModifier(this));
+		cursor = new CommonTableCursor(m_columnTableViewer);
 	}
 
 	// Gets the predicate of the first row (for migration purpose only)
