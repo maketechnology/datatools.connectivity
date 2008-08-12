@@ -12,6 +12,7 @@ package org.eclipse.datatools.connectivity.sqm.server.internal.ui.explorer.provi
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.datatools.connectivity.sqm.core.internal.ui.util.resources.DataToolsUIConstants;
 import org.eclipse.datatools.connectivity.sqm.core.ui.services.IDataToolsUIServiceManager;
 import org.eclipse.datatools.connectivity.sqm.server.internal.ui.services.IServicesManager;
@@ -24,7 +25,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.markers.MarkerItem;
 
 /**
  * @author ljulien
@@ -49,12 +49,12 @@ public class BookmarkSelectionProvider
                     {
 	                    IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 	                    Object obj = structuredSelection.getFirstElement();
-	                    if (obj == null || !(obj instanceof MarkerItem))
+	                    if (obj == null || !(obj instanceof IAdaptable))
 	                    {
 	                        return;
 	                    }
 	
-	                    IMarker marker = ((MarkerItem) obj).getMarker();
+	                    IMarker marker = (IMarker) ((IAdaptable)obj).getAdapter(IMarker.class);
 	                    try
 	                    {
 	                        if (marker.getType().equals(DataToolsUIConstants.TRANSIENT_BOOKMARK))
