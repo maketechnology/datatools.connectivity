@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2005 Sybase, Inc.
+ * Copyright (c) 2004, 2010 Sybase, Inc. and others
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -40,6 +40,33 @@ import org.eclipse.ui.IActionDelegate;
  */
 public class RenameAction extends Action implements IActionDelegate {
 
+	private final class NameValidator implements IInputValidator {
+		
+		private String initialName = null;
+		
+		public NameValidator(String init) {
+			this.initialName = init;
+		}
+		
+		public String isValid(String newText) {
+			if (newText == null || newText.trim().length() == 0) {
+				return ConnectivityUIPlugin.getDefault().getResourceString(
+						"rename.dialog.errmsg.invalid"); //$NON-NLS-1$
+			}
+			else if (this.initialName.compareTo(newText) != 0 && nameExisting(newText)) {
+				return ConnectivityUIPlugin.getDefault().getResourceString(
+						"rename.dialog.errmsg.existing"); //$NON-NLS-1$                    
+			}
+			else if (newText.trim().length() < newText.length() ) {
+				return ConnectivityUIPlugin.getDefault().getResourceString(
+						"rename.dialog.errmsg.NoSpacesInName"); //$NON-NLS-1$
+			}
+			else {
+				return null;
+			}
+		}
+	}
+
 	private Shell mParentShell;
 
 	private IConnectionProfile mProfile;
@@ -55,26 +82,7 @@ public class RenameAction extends Action implements IActionDelegate {
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
-		IInputValidator inputValidator = new IInputValidator() {
-
-			public String isValid(String newText) {
-				if (newText == null || newText.trim().length() == 0) {
-					return ConnectivityUIPlugin.getDefault().getResourceString(
-							"rename.dialog.errmsg.invalid"); //$NON-NLS-1$
-				}
-				else if (nameExisting(newText)) {
-					return ConnectivityUIPlugin.getDefault().getResourceString(
-							"rename.dialog.errmsg.existing"); //$NON-NLS-1$                    
-				}
-				else if (newText.trim().length() < newText.length() ) {
-					return ConnectivityUIPlugin.getDefault().getResourceString(
-							"rename.dialog.errmsg.NoSpacesInName"); //$NON-NLS-1$
-				}
-				else {
-					return null;
-				}
-			}
-		};
+		IInputValidator inputValidator = new NameValidator(mProfile.getName());
 		InputDialog d = new InputDialog(
 				mParentShell,
 				ConnectivityUIPlugin.getDefault().getResourceString(
