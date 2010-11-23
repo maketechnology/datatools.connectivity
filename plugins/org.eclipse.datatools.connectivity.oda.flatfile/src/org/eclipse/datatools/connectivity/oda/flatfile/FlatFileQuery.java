@@ -681,7 +681,7 @@ public class FlatFileQuery implements IQuery
 				if ( inQuote )
 					continue;
 				else
-					indiceList.add( Integer.valueOf( i ) );
+					indiceList.add( new Integer( i ) );
 			}
 		}
 

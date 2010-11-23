@@ -99,9 +99,10 @@ public class ColumnsInfoUtil
 		{
 			if ( columnsInfoChars[i] == '"'
 					|| columnsInfoChars[i] == '|' || columnsInfoChars[i] == ':'
-					|| columnsInfoChars[i] == '<' || columnsInfoChars[i] == '>'
-					|| columnsInfoChars[i] == '?' || columnsInfoChars[i] == '*'
-					|| columnsInfoChars[i] == '{' || columnsInfoChars[i] == '/' )
+					|| columnsInfoChars[i] == ':' || columnsInfoChars[i] == '<'
+					|| columnsInfoChars[i] == '>' || columnsInfoChars[i] == '?'
+					|| columnsInfoChars[i] == '*' || columnsInfoChars[i] == '{'
+					|| columnsInfoChars[i] == '/' )
 			{
 				if ( isEscaped )
 				{
