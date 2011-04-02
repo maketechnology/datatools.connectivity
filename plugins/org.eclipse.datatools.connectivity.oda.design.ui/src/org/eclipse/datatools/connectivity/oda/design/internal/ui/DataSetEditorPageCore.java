@@ -75,6 +75,7 @@ public class DataSetEditorPageCore extends PropertyPage
         
         Control wrappedControl = getCustomPage().getControl();
         setHelpContext( wrappedControl );
+        wrappedControl.setFocus( );
         return wrappedControl;
     }
 
