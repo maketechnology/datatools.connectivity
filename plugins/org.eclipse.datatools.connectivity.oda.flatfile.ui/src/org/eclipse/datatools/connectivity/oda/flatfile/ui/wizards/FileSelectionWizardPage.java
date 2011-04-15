@@ -535,7 +535,12 @@ public class FileSelectionWizardPage extends DataSetWizardPage
 						if ( count == 1 )
 						{
 							btnRemove.setEnabled( true );
-							if ( index == 0 )
+							if( selectedColumnsViewer.getTable( ).getItemCount( ) == 1 )
+							{
+								btnMoveUp.setEnabled( false );
+								btnMoveDown.setEnabled( false );
+							}
+							else if ( index == 0 )
 							{
 								btnMoveUp.setEnabled( false );
 								btnMoveDown.setEnabled( true );
