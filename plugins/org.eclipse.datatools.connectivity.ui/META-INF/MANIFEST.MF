@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.Name
 Bundle-SymbolicName: org.eclipse.datatools.connectivity.ui; singleton:=true
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 1.2.2.qualifier
 Bundle-Activator: org.eclipse.datatools.connectivity.internal.ui.ConnectivityUIPlugin
 Bundle-Vendor: %Plugin.ProviderName
 Bundle-Localization: plugin
@@ -32,4 +32,5 @@ Export-Package: org.eclipse.datatools.connectivity.internal.ui,
  org.eclipse.datatools.connectivity.ui.actions,
  org.eclipse.datatools.connectivity.ui.navigator,
  org.eclipse.datatools.connectivity.ui.navigator.actions,
+ org.eclipse.datatools.connectivity.ui.status,
  org.eclipse.datatools.connectivity.ui.wizards
