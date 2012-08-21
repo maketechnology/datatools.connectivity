@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2010 Sybase, Inc. and others.
+ * Copyright (c) 2004-2012 Sybase, Inc. and others.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -115,7 +116,7 @@ public class DriverManager {
 	}
 
 	private DriverManager() {
-		resetDefaultInstances();
+		resetDefaultInstances(true);
 	}
 
 	private DriverInstance getDriverInstanceFromMapByName( String name ) {
@@ -494,6 +495,12 @@ public class DriverManager {
 		addDriverInstance(di);
 	}
 
+	public void addDriverInstances(IPropertySet[] propertySets) {
+		saveChanges(propertySets);
+		mDriverInstanceMap = new HashMap();
+		loadAllInstances();
+	}
+	
 	/**
 	 * Parses the incoming string by the token.
 	 * @param str_list String list
@@ -570,7 +577,10 @@ public class DriverManager {
 	 * This is when the plug-in is loaded.
 	 */
 	public void resetDefaultInstances() {
-
+		resetDefaultInstances(false);
+	}
+	
+	public void resetDefaultInstances(boolean batchUpdate) {
 		debug ("resetDefaultInstances"); //$NON-NLS-1$
 		
 		// Start building a list
@@ -593,14 +603,20 @@ public class DriverManager {
 		}
 
 		wereDefaultDriversCreated();
-//		if (wereDefaultDriversCreated()) 
-//			return;
 
 		debug ("resetDefaultInstances: checking for drivers to create by default"); //$NON-NLS-1$
 
 		// Now grab all the driver instances from the file
 		IPropertySet[] psets = getPropertySetsFromMap();
 
+		List<IPropertySet> pendingPropertySets = null;
+		List<TemplateDescriptor> pendingDefaultsCreated = null;
+		boolean updatePending = false;
+		if (batchUpdate) {
+			pendingPropertySets = new ArrayList<IPropertySet>();
+			pendingDefaultsCreated = new ArrayList<TemplateDescriptor>();
+		}
+		
 		// now process the templates and see if we need to
 		// create any instances
 		for (int i = 0; i < types.length; i++) {
@@ -653,21 +669,45 @@ public class DriverManager {
 			debug("Default already exists for " + type.getId() + ": " + defaultExists); //$NON-NLS-1$ //$NON-NLS-2$
 			if ((createDefaultValue || type.getCreateDefaultFlag()) && !defaultExists && !alreadyExists) {
 				IPropertySet newPset = createDefaultInstance(type);
-				if (newPset != null)
-					addDriverInstance(newPset);
-				
-				setDefaultCreated( type.getId(), true );				
+				if (newPset != null) {
+					if (batchUpdate) {
+						pendingPropertySets.add(newPset);
+						pendingDefaultsCreated.add(type);
+						updatePending = true;
+					} else {
+						addDriverInstance(newPset);
+						setDefaultCreated( type.getId(), true );
+					}
+				}					
 			}
 		}
+		
+		if (batchUpdate && updatePending) {
+			addDriverInstances(pendingPropertySets.toArray(new IPropertySet[0]));
+			setDefaultCreated(pendingDefaultsCreated.toArray(new TemplateDescriptor[0]), true);
+		}
+		
 		boolean markerCreated = createDefaultDriversMarker();
 		debug("Marker created: " + markerCreated); //$NON-NLS-1$
 	}
 
+	private void setDefaultCreated(TemplateDescriptor[] types, boolean isDefaultCreated) {
+		for (TemplateDescriptor type : types) {
+			ConnectivityPlugin.getDefault().getPluginPreferences().setValue(type.getId(), isDefaultCreated);
+		}
+		
+		savePreferences();
+	}
+	
 	private void setDefaultCreated( String driverTemplateId, boolean isDefaultCreated )
 	{
         ConnectivityPlugin.getDefault().
             getPluginPreferences().setValue( driverTemplateId, isDefaultCreated );
         
+            savePreferences();
+	}  
+	
+	private void savePreferences() {
         IPath metadataPath = 
             ConnectivityPlugin.getDefault().getStateLocation();
         metadataPath = metadataPath.append(DRIVER_MARKER_FILE_NAME);
