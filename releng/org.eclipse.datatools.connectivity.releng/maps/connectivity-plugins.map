@@ -1,4 +1,4 @@
-plugin@org.eclipse.datatools.connectivity=GIT,tag=v201208141200,repo=git://git.eclipse.org/gitroot/datatools/org.eclipse.datatools.connectivity.git,path=plugins/org.eclipse.datatools.connectivity
+plugin@org.eclipse.datatools.connectivity=GIT,tag=v201208201745,repo=git://git.eclipse.org/gitroot/datatools/org.eclipse.datatools.connectivity.git,path=plugins/org.eclipse.datatools.connectivity
 plugin@org.eclipse.datatools.connectivity.apache.derby.dbdefinition=GIT,tag=v200906161815,repo=git://git.eclipse.org/gitroot/datatools/org.eclipse.datatools.connectivity.git,path=plugins/org.eclipse.datatools.connectivity.apache.derby.dbdefinition
 plugin@org.eclipse.datatools.connectivity.apache.derby.ui=GIT,tag=v201007080903,repo=git://git.eclipse.org/gitroot/datatools/org.eclipse.datatools.connectivity.git,path=plugins/org.eclipse.datatools.connectivity.apache.derby.ui
 plugin@org.eclipse.datatools.connectivity.apache.derby=GIT,tag=v200906020900,repo=git://git.eclipse.org/gitroot/datatools/org.eclipse.datatools.connectivity.git,path=plugins/org.eclipse.datatools.connectivity.apache.derby
