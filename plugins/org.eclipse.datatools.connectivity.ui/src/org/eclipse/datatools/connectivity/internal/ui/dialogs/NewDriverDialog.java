@@ -339,11 +339,11 @@ public class NewDriverDialog extends TitleAreaDialog {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		this.mOKButton = createButton(parent, IDialogConstants.OK_ID,
-				IDialogConstants.OK_LABEL, true);
+				IDialogConstants.get().OK_LABEL, true);
 		this.mOKButton.setEnabled(false);
 
 		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+				IDialogConstants.get().CANCEL_LABEL, false);
 	}
 
 	/*

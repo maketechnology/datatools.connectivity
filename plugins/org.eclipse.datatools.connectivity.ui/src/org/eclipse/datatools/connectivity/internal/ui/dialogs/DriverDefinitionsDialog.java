@@ -395,10 +395,10 @@ public class DriverDefinitionsDialog extends TitleAreaDialog
 	 * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
-		this.mOKButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+		this.mOKButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.get().OK_LABEL,
 				true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+				IDialogConstants.get().CANCEL_LABEL, false);
 		if (this.selectedPS == null ) {
 			this.mOKButton.setEnabled(false);
 		}

@@ -1064,9 +1064,9 @@ public class DriverDialog extends TitleAreaDialog {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		this.mOKButton = createButton(parent, IDialogConstants.OK_ID,
-				IDialogConstants.OK_LABEL, true);
+				IDialogConstants.get().OK_LABEL, true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
-				IDialogConstants.CANCEL_LABEL, false);
+				IDialogConstants.get().CANCEL_LABEL, false);
 	}
 
 	/**
@@ -1111,15 +1111,15 @@ public class DriverDialog extends TitleAreaDialog {
 
 		String dirName = previouslyBrowsedDirectory;
 
-		if (dirName.length() == 0) //$NON-NLS-1$
-			dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot()
-					.getLocation().toOSString());
-		else {
+		if (dirName.length() == 0) { //$NON-NLS-1$
+//			dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot()
+//					.getLocation().toOSString());
+		} else {
 			File path = new File(dirName);
 			if (path.exists()) {
-				dialog.setFilterPath(new Path(dirName).toOSString());
+//				dialog.setFilterPath(new Path(dirName).toOSString());
 			} else {
-				dialog.setFilterPath(new Path(System.getProperty("user.home")).toOSString());
+//				dialog.setFilterPath(new Path(System.getProperty("user.home")).toOSString());
 			}
 		}
 
@@ -1297,16 +1297,16 @@ public class DriverDialog extends TitleAreaDialog {
 
 		String dirName = editLocation;
 
-		dialog.setFileName(dirName);
-		if (dirName.length() == 0) //$NON-NLS-1$
-			dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot()
-					.getLocation().toOSString());
-		else {
+//		dialog.setFileName(dirName);
+		if (dirName.length() == 0) { //$NON-NLS-1$
+//			dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot()
+//					.getLocation().toOSString());
+		} else {
 			File path = new File(dirName);
-			if (path.exists())
-				dialog.setFilterPath(new Path(dirName).toOSString());
-			else {
-				dialog.setFilterPath(dirName);
+			if (path.exists()) {
+//				dialog.setFilterPath(new Path(dirName).toOSString());
+			} else {
+//				dialog.setFilterPath(dirName);
 			}
 		}
 
