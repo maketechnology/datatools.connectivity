@@ -97,12 +97,12 @@ public class SQLExceptionDialog extends IconAndMessageDialog
         {
             list.dispose();
             listCreated = false;
-            detailsButton.setText(IDialogConstants.SHOW_DETAILS_LABEL);
+            detailsButton.setText(IDialogConstants.get().SHOW_DETAILS_LABEL);
         }
         else
         {
             list = createDropDownList((Composite) getContents());
-            detailsButton.setText(IDialogConstants.HIDE_DETAILS_LABEL);
+            detailsButton.setText(IDialogConstants.get().HIDE_DETAILS_LABEL);
         }
         Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
         getShell().setSize(new Point(windowSize.x, windowSize.y + (newSize.y - oldSize.y)));
@@ -236,7 +236,7 @@ public class SQLExceptionDialog extends IconAndMessageDialog
         createButton(parent, RECONNECT_ID, RECONNECT, true);
         createButton(parent, DISCONNECT_ID, DISCONNECT, false);
         createButton(parent, IGNORE_ID, IGNORE, false);
-        this.detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL,
+        this.detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.get().SHOW_DETAILS_LABEL,
                 false);
     }
 

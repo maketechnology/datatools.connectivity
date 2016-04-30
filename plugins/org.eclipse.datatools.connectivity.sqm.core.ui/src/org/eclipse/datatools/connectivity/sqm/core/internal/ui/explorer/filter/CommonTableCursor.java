@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableCursor;
+//import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -26,12 +26,15 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 
-public class CommonTableCursor extends TableCursor {
+public class CommonTableCursor extends Canvas/* TableCursor */{
     
 	protected TableViewer tableViewer;
 	
@@ -129,6 +132,14 @@ public class CommonTableCursor extends TableCursor {
 		tableViewer.editElement(o, getColumn());
 	}
 	
+	private int getColumn() {
+		return 0;
+	}
+
+	private TableColumn getRow() {
+		return null;
+	}
+
 	protected void handleTraverse(TraverseEvent event)
 	{
 	    if (event.widget == this) {
@@ -149,7 +160,7 @@ public class CommonTableCursor extends TableCursor {
 		            return;
 		        }
 		    }
-		    setSelection(row, col);
+//		    setSelection(row, col);
 			event.doit = false;
 			return;
 		case SWT.TRAVERSE_TAB_NEXT:
@@ -163,7 +174,7 @@ public class CommonTableCursor extends TableCursor {
 		            return;
 		        }
 		    }
-		    setSelection(row, col);
+//		    setSelection(row, col);
 		    event.doit = false;
 		    return;
 		}
@@ -171,7 +182,7 @@ public class CommonTableCursor extends TableCursor {
 	}
 	
 	protected void addListeners() {
-		this.addSelectionListener(new SelectionAdapter() {
+		/*this.addSelectionListener(new SelectionAdapter() {
             // when the TableEditor is over a cell, select the corresponding row in 
             // the table
             public void widgetSelected(SelectionEvent e) {
@@ -187,7 +198,7 @@ public class CommonTableCursor extends TableCursor {
                     tableViewer.editElement(selection.getFirstElement(), column);
                 }
             }
-        });
+        });*/
 
         // Hide the TableCursor when the user hits the "CTRL" or "SHIFT" key.
         // This alows the user to select multiple items in the table.
@@ -221,7 +232,7 @@ public class CommonTableCursor extends TableCursor {
                 if (table.getItemCount() > 0) {
                     TableItem row = (selection.length == 0) ? table.getItem(table.getTopIndex()) : selection[0];
                     table.showItem(row);
-                    setSelection(row, getColumn());
+//                    setSelection(row, getColumn());
                     setVisible(true);
                     setFocus();
                 }

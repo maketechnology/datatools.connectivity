@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
-import org.eclipse.ui.ide.IDEActionFactory;
+//import org.eclipse.ui.ide.IDEActionFactory;
 import org.eclipse.ui.navigator.CommonActionProvider;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
@@ -57,7 +57,7 @@ public class BookmarkAction extends CommonActionProvider
 
     public void dispose()
     {
-        this.viewSite.getActionBars().setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(), null);
+//        this.viewSite.getActionBars().setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(), null);
         if (bookmarkProvider != null)
         {
             bookmarkProvider.removeListener();
@@ -76,7 +76,7 @@ public class BookmarkAction extends CommonActionProvider
     {
         if (isSelectionValid((IStructuredSelection) this.getContext().getSelection()))
         {
-            theActionBars.setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(), bookmarkProvider);
+//            theActionBars.setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(), bookmarkProvider);
         }
 
         theActionBars.updateActionBars();
