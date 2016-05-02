@@ -6,13 +6,14 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.datatools.connectivity.db.generic.ui.GenericDBUIPlugin
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.eclipse.ui;resolution:=optional,
+ org.eclipse.rap.ui;bundle-version="3.0.2";resolution:=optional,
  org.eclipse.core.runtime,
  org.eclipse.datatools.connectivity,
  org.eclipse.datatools.connectivity.ui,
  org.eclipse.datatools.connectivity.db.generic,
  org.eclipse.datatools.help,
- org.eclipse.help.base
+ org.eclipse.help.base;resolution:=optional
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.datatools.connectivity.db.generic.ui,
