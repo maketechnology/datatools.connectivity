@@ -1,22 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * Copyright (c) 2001, 2007 IBM Corporation and others. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- * IBM Corporation - initial API and implementation
+ *
+ * Contributors: IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.datatools.connectivity.sqm.server.internal.ui.explorer.loading;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.ui.progress.UIJob;
 
-public class LoadingJob extends Job
+public class LoadingJob extends UIJob
 {
 	private ILoadingService loadingService;
 	private LoadingNode placeHolder;
@@ -33,7 +31,7 @@ public class LoadingJob extends Job
 		setRule(new NonConflictingRule());
 	}
 
-	protected IStatus run(IProgressMonitor monitor)
+    public IStatus runInUIThread(IProgressMonitor monitor)
 	{
 		LoadingUIJob updateUIJob = new LoadingUIJob(viewer, placeHolder);
 		updateUIJob.schedule();
@@ -48,9 +46,11 @@ public class LoadingJob extends Job
 		}
 		return Status.OK_STATUS;
 	}
-	
-	public boolean belongsTo(Object family) 
+
+    public boolean belongsTo(Object family)
 	{
 		return family == LoadingNode.LOADING_FAMILY;
 	}
+
+
 }

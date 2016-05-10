@@ -1,13 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2013 Sybase, Inc. and others.
- * 
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
+ *
+ * All rights reserved. This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: rcernich, shongxum - initial API and implementation
- *     Actuate Corporation - transient and external profiles handling (bug #310356, #413778)
+ *
+ * Contributors: rcernich, shongxum - initial API and implementation Actuate Corporation - transient
+ * and external profiles handling (bug #310356, #413778)
  *
  ******************************************************************************/
 
@@ -56,6 +55,9 @@ import org.eclipse.datatools.connectivity.ProfileRule;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.repository.IConnectionProfileRepository;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.progress.UIJob;
 
 /**
  * @author rcernich, shongxum
@@ -63,12 +65,11 @@ import org.eclipse.datatools.connectivity.internal.repository.IConnectionProfile
 public class ConnectionProfile extends PlatformObject implements
 		IConnectionProfile {
 
-    static final String PROPERTY_PREFIX = "org.eclipse.ui.workbench.progress"; //$NON-NLS-1$
+	static final String PROPERTY_PREFIX = "org.eclipse.ui.workbench.progress"; //$NON-NLS-1$
 
-    public static final QualifiedName NO_IMMEDIATE_ERROR_PROMPT_PROPERTY = new QualifiedName(
-            PROPERTY_PREFIX, "delayErrorPrompt"); //$NON-NLS-1$
-    
-    // (String id,Properties props)
+	public static final QualifiedName NO_IMMEDIATE_ERROR_PROMPT_PROPERTY = new QualifiedName(PROPERTY_PREFIX, "delayErrorPrompt"); //$NON-NLS-1$
+
+	// (String id,Properties props)
 	private Map mPropertiesMap = new HashMap();
 	private String mName;
 	private String mDescription;
@@ -110,19 +111,19 @@ public class ConnectionProfile extends PlatformObject implements
 		mAutoConnect = autoConnect;
 		mIsCreating = true;
 		mInstanceID = instanceID;
-		
+
 		initManagedConnections();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getName()
 	 */
 	public String getName() {
 		return mName;
 	}
-	
+
 	public String getProfilePath() {
 		if (mParentProfile == null) {
 			return getName();
@@ -142,7 +143,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getDescription()
 	 */
 	public String getDescription() {
@@ -179,7 +180,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getParentProfile()
 	 */
 	public IConnectionProfile getParentProfile() {
@@ -189,12 +190,12 @@ public class ConnectionProfile extends PlatformObject implements
 		return ProfileManager.getInstance().getProfileByInstanceID(mParentProfile);
 	}
 
-	
+
 	public IConnectionProfileRepository getRepository() {
 		return mRepository;
 	}
 
-	
+
 	public void setRepository(IConnectionProfileRepository repository) {
 		mRepository = repository;
 		if (mRepository == null) {
@@ -207,7 +208,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getBaseProperties()
 	 */
 	public Properties getBaseProperties() {
@@ -216,8 +217,9 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#setBaseProperties(java.util.Properties)
+	 *
+	 * @see
+	 * org.eclipse.datatools.connectivity.IConnectionProfile#setBaseProperties(java.util.Properties)
 	 */
 	public void setBaseProperties(Properties props) {
 		setProperties(mProfileId, props);
@@ -225,7 +227,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getProperties(java.lang.String)
 	 */
 	public Properties getProperties(String type) {
@@ -239,9 +241,9 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#setProperties(java.lang.String,
-	 *      java.util.Properties)
+	 * java.util.Properties)
 	 */
 	public void setProperties(String type, Properties props) {
 		Properties oldProps = (Properties)mPropertiesMap.get(type);
@@ -293,7 +295,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getProviderName()
 	 */
 	public String getProviderName() {
@@ -302,7 +304,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getProviderId()
 	 */
 	public String getProviderId() {
@@ -311,7 +313,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getCategory()
 	 */
 	public ICategory getCategory() {
@@ -334,7 +336,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getConfigurationType()
 	 */
 	public IConfigurationType getConfigurationType() {
@@ -343,7 +345,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getProfileExtensions()
 	 */
 	public Map getProfileExtensions() {
@@ -352,7 +354,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#createConnection(java.lang.String)
 	 */
 	public IConnection createConnection(String factoryId) {
@@ -361,9 +363,9 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#createConnection(java.lang.String,
-	 *      java.lang.String, java.lang.String)
+	 * java.lang.String, java.lang.String)
 	 */
 	public IConnection createConnection(String factoryId, String uid, String pwd) {
 		return mProvider.getConnectionFactory(factoryId).createConnection(this,
@@ -379,7 +381,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.datatools.connectivity.IConnectionProfile#getProvider()
 	 */
 	public IConnectionProfileProvider getProvider() {
@@ -394,7 +396,7 @@ public class ConnectionProfile extends PlatformObject implements
 			disconnect();
 		}
 	}
-	
+
 	public void migrate() {
 		IConnectionProfileMigrator migrator = mProvider.getMigrator();
 		if (migrator == null) {
@@ -455,7 +457,7 @@ public class ConnectionProfile extends PlatformObject implements
 			CreateConnectionJob connectionJob = new CreateConnectionJob(
 					(ManagedConnection) it.next(), this);
 			IStatus status = connectionJob.run(new NullProgressMonitor());
-			connectionJobs.add(connectionJob);	
+			connectionJobs.add(connectionJob);
 			connectionStatuses.add(status);
 		}
 
@@ -469,7 +471,7 @@ public class ConnectionProfile extends PlatformObject implements
 			connectionEventJob.run(new NullProgressMonitor());
 		}
 
-		
+
 		boolean someOK = false;
 		int severity = 0;
 		List statuses = new ArrayList(connectionStatuses.size());
@@ -521,7 +523,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 		return returnStatus;
 	}
-	
+
 	public IStatus connect() {
 		/*
 		 * Cancel any jobs currently associated with this profile. Specifically,
@@ -530,7 +532,7 @@ public class ConnectionProfile extends PlatformObject implements
 		 */
 		Job.getJobManager().cancel(this);
 
-		Job connectJob = new ConnectJob();
+        Job connectJob = new ConnectJob(LifeCycleUtil.getSessionDisplay());
 		connectJob.schedule();
 		try {
 			connectJob.join();
@@ -542,7 +544,7 @@ public class ConnectionProfile extends PlatformObject implements
 	}
 
 	public void connect(IJobChangeListener listener) {
-		Job connectJob = new ConnectJob();
+        Job connectJob = new ConnectJob(LifeCycleUtil.getSessionDisplay());
 
 		if (listener != null) {
 			connectJob.addJobChangeListener(listener);
@@ -588,18 +590,17 @@ public class ConnectionProfile extends PlatformObject implements
 	 * Clearing password is applicable only if this profile instance is persisted in the workspace'
 	 * connection profile store.
 	 */
-	public void clearPasswordIfNotCached() 
+	public void clearPasswordIfNotCached()
 	{
 		Properties properties = getBaseProperties();
 		String savePassword = properties.getProperty(IJDBCConnectionProfileConstants.SAVE_PASSWORD_PROP_ID);
 		if ( Boolean.valueOf(savePassword) == Boolean.FALSE &&
-		        !InternalProfileManager.isTransientProfile(this) &&
-		        InternalProfileManager.getInstance().getProfileByName( getName(), false ) != null ) {
+						!InternalProfileManager.isTransientProfile(this) && InternalProfileManager.getInstance().getProfileByName(getName(), false) != null) {
 			properties.remove(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 			setBaseProperties(properties);
 		}
 	}
-	
+
 	public boolean canWorkOffline() {
 		boolean retVal = false;
 		for (Iterator it = mFactoryIDToManagedConnection.values().iterator(); !retVal
@@ -661,11 +662,11 @@ public class ConnectionProfile extends PlatformObject implements
 
 	public void saveWorkOfflineData(IJobChangeListener listener) {
 		Job saveWorkOfflineDataJob = new SaveWorkOfflineDataJob();
-		
+
 		if (listener != null) {
 			saveWorkOfflineDataJob.addJobChangeListener(listener);
 		}
-		
+
 		saveWorkOfflineDataJob.schedule();
 	}
 
@@ -712,21 +713,22 @@ public class ConnectionProfile extends PlatformObject implements
 			}
 		}
 	}
-	
+
 	/*package*/Map getPropertiesMap() {
 		return Collections.unmodifiableMap(mPropertiesMap);
 	}
 
 	private void notifyManager() {
-	    // notify manager only when updating a non-transient profile;
-	    // note that transient profile has no listener; thus no need to manage its updates (BZ 310356)
+		// notify manager only when updating a non-transient profile;
+		// note that transient profile has no listener; thus no need to manage its updates (BZ
+		// 310356)
 		if (!mIsCreating && !InternalProfileManager.isTransientProfile(this) )
 			try {
 				InternalProfileManager.getInstance().modifyProfile(this);
 			}
 			catch (ConnectionProfileException e) {
-			    if( mConnectListeners.size() > 0 )   // log only if there are listeners that might care
-			        ConnectivityPlugin.getDefault().log(e);
+				if (mConnectListeners.size() > 0) // log only if there are listeners that might care
+					ConnectivityPlugin.getDefault().log(e);
 			}
 	}
 
@@ -736,7 +738,7 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
@@ -749,13 +751,13 @@ public class ConnectionProfile extends PlatformObject implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
 		return getInstanceID().hashCode();
 	}
-	
+
 	public void dispose() {
 		Job disconnectJob = new DisconnectJob(true);
 		disconnectJob.schedule();
@@ -774,7 +776,7 @@ public class ConnectionProfile extends PlatformObject implements
 		}
 		mFactoryIDToManagedConnection.clear();
 	}
-	
+
 	private void initManagedConnections() {
 		Map connectionFactories = mProvider.getConnectionFactories();
 		connectionFactories.remove(ConnectionProfileConstants.PING_FACTORY_ID);
@@ -787,10 +789,10 @@ public class ConnectionProfile extends PlatformObject implements
 	}
 
 	private void addFailureMarker(IStatus result) {
-        // maintenance of problem markers is only applicable on OSGi platform
-        if( ! ConnectivityPlugin.isRunningOSGiPlatform() )
-            return;
-        
+		// maintenance of problem markers is only applicable on OSGi platform
+		if (!ConnectivityPlugin.isRunningOSGiPlatform())
+			return;
+
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot();
 		Map map = new HashMap(3);
 		map.put(IMarker.MESSAGE, ConnectivityPlugin.getDefault().getResourceString(
@@ -809,10 +811,10 @@ public class ConnectionProfile extends PlatformObject implements
 	}
 
 	private void removeOldFailureMarkers() {
-        // maintenance of problem markers is only applicable on OSGi platform
-        if( ! ConnectivityPlugin.isRunningOSGiPlatform() )
-            return;
-        
+		// maintenance of problem markers is only applicable on OSGi platform
+		if (!ConnectivityPlugin.isRunningOSGiPlatform())
+			return;
+
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot();
 		try {
 			IMarker[] markers = resource.findMarkers(
@@ -829,10 +831,10 @@ public class ConnectionProfile extends PlatformObject implements
 		}
 	}
 
-	public class ConnectJob extends Job {
+	public class ConnectJob extends UIJob {
 
 		/**
-		 * 
+		 *
 		 */
 		public ConnectJob() {
 			super(ConnectivityPlugin.getDefault().getResourceString(
@@ -843,12 +845,17 @@ public class ConnectionProfile extends PlatformObject implements
 			setRule(new ProfileRule(ConnectionProfile.this));
 		}
 
+		public ConnectJob(Display display) {
+			super(display, "ConnectJob.name");
+		}
+
 		/*
 		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
+		 *
+		 * @see
+		 * org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
 		 */
-		protected IStatus run(IProgressMonitor monitor) {
+		public IStatus runInUIThread(IProgressMonitor monitor) {
 			if (getConnectionState() == CONNECTED_STATE) {
 				return Status.OK_STATUS;
 			}
@@ -900,7 +907,7 @@ public class ConnectionProfile extends PlatformObject implements
 				// TODO: What exaclty???
 				e.printStackTrace();
 			}
-			
+
 			removeOldFailureMarkers();
 
 			List statuses = new ArrayList(connectionJobs.size());
@@ -954,7 +961,7 @@ public class ConnectionProfile extends PlatformObject implements
 										new Object[] { ConnectionProfile.this
 												.getName()}));
 			}
-			
+
 			monitor.done();
 
 			return retVal;
@@ -963,8 +970,9 @@ public class ConnectionProfile extends PlatformObject implements
 		public boolean belongsTo(Object family) {
 			return ConnectionProfile.this.equals(family);
 		}
+
 	}
-	
+
 	public class OpenConnectionEventJob extends Job {
 
 		private IConnectListener mListener;
@@ -1003,11 +1011,11 @@ public class ConnectionProfile extends PlatformObject implements
 	public class DisconnectJob extends Job {
 
 		private boolean mForce;
-		
+
 		public DisconnectJob() {
 			this(false);
 		}
-		
+
 		/**
 		 * @param force
 		 */
@@ -1023,8 +1031,9 @@ public class ConnectionProfile extends PlatformObject implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
+		 *
+		 * @see
+		 * org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
 		 */
 		protected IStatus run(IProgressMonitor monitor) {
 			if (getConnectionState() == DISCONNECTED_STATE) {
@@ -1194,7 +1203,7 @@ public class ConnectionProfile extends PlatformObject implements
 			return status;
 		}
 	}
-	
+
 	private static class ConnectMultiStatus extends MultiStatus {
 
 		public ConnectMultiStatus(int severity, IStatus[] newChildren,
@@ -1207,7 +1216,7 @@ public class ConnectionProfile extends PlatformObject implements
 	public class WorkOfflineJob extends Job {
 
 		/**
-		 * 
+		 *
 		 */
 		public WorkOfflineJob() {
 			super(ConnectivityPlugin.getDefault().getResourceString(
@@ -1220,8 +1229,9 @@ public class ConnectionProfile extends PlatformObject implements
 
 		/*
 		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
+		 *
+		 * @see
+		 * org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
 		 */
 		protected IStatus run(IProgressMonitor monitor) {
 			if (getConnectionState() == WORKING_OFFLINE_STATE) {
