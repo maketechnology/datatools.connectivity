@@ -836,17 +836,13 @@ public class ConnectionProfile extends PlatformObject implements
 		/**
 		 *
 		 */
-		public ConnectJob() {
-			super(ConnectivityPlugin.getDefault().getResourceString(
+        public ConnectJob(Display display) {
+            super(display, ConnectivityPlugin.getDefault().getResourceString(
 					"ConnectJob.name", //$NON-NLS-1$
 					new Object[] { ConnectionProfile.this.getName()}));
 			setUser(true);
 			setSystem(false);
 			setRule(new ProfileRule(ConnectionProfile.this));
-		}
-
-		public ConnectJob(Display display) {
-			super(display, "ConnectJob.name");
 		}
 
 		/*
@@ -1008,7 +1004,7 @@ public class ConnectionProfile extends PlatformObject implements
 		}
 	}
 
-	public class DisconnectJob extends Job {
+    public class DisconnectJob extends UIJob {
 
 		private boolean mForce;
 
@@ -1035,7 +1031,7 @@ public class ConnectionProfile extends PlatformObject implements
 		 * @see
 		 * org.eclipse.core.internal.jobs.InternalJob#run(org.eclipse.core.runtime.IProgressMonitor)
 		 */
-		protected IStatus run(IProgressMonitor monitor) {
+        public IStatus runInUIThread(IProgressMonitor monitor) {
 			if (getConnectionState() == DISCONNECTED_STATE) {
 				return Status.OK_STATUS;
 			}
