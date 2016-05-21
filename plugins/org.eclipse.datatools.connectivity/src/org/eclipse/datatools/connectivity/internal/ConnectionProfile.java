@@ -56,6 +56,9 @@ import org.eclipse.datatools.connectivity.ProfileRule;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.repository.IConnectionProfileRepository;
+import org.eclipse.rap.rwt.internal.lifecycle.ContextUtil;
+import org.eclipse.rap.rwt.internal.service.ContextProvider;
+import org.eclipse.rap.rwt.internal.service.ServiceContext;
 
 /**
  * @author rcernich, shongxum
@@ -831,6 +834,8 @@ public class ConnectionProfile extends PlatformObject implements
 
 	public class ConnectJob extends Job {
 
+		private ServiceContext ctx;
+
 		/**
 		 * 
 		 */
@@ -841,6 +846,8 @@ public class ConnectionProfile extends PlatformObject implements
 			setUser(true);
 			setSystem(false);
 			setRule(new ProfileRule(ConnectionProfile.this));
+
+			ctx = ContextUtil.createFakeContext(ContextProvider.getUISession());
 		}
 
 		/*
@@ -852,6 +859,8 @@ public class ConnectionProfile extends PlatformObject implements
 			if (getConnectionState() == CONNECTED_STATE) {
 				return Status.OK_STATUS;
 			}
+			
+			ContextProvider.setContext(ctx, getThread());
 
 			IStatus retVal;
 
@@ -956,6 +965,7 @@ public class ConnectionProfile extends PlatformObject implements
 			}
 			
 			monitor.done();
+			ContextProvider.disposeContext(getThread());
 
 			return retVal;
 		}
@@ -1003,6 +1013,7 @@ public class ConnectionProfile extends PlatformObject implements
 	public class DisconnectJob extends Job {
 
 		private boolean mForce;
+		private ServiceContext ctx;
 		
 		public DisconnectJob() {
 			this(false);
@@ -1019,6 +1030,8 @@ public class ConnectionProfile extends PlatformObject implements
 			setUser(true);
 			setSystem(false);
 			setRule(new ProfileRule(ConnectionProfile.this));
+			
+			ctx = ContextUtil.createFakeContext(ContextProvider.getUISession());
 		}
 
 		/*
@@ -1030,6 +1043,8 @@ public class ConnectionProfile extends PlatformObject implements
 			if (getConnectionState() == DISCONNECTED_STATE) {
 				return Status.OK_STATUS;
 			}
+			
+			ContextProvider.setContext(ctx, getThread());
 
 			IStatus retVal;
 
@@ -1044,6 +1059,7 @@ public class ConnectionProfile extends PlatformObject implements
 						.iterator(); it.hasNext();) {
 					if (!((ManagedConnection) it.next()).okToClose()) {
 						monitor.setCanceled(true);
+						ContextProvider.disposeContext(getThread());
 						return Status.CANCEL_STATUS;
 					}
 				}
@@ -1053,6 +1069,7 @@ public class ConnectionProfile extends PlatformObject implements
 						if (!((IConnectListener) listeners[index])
 								.okToClose(event)) {
 							monitor.setCanceled(true);
+							ContextProvider.disposeContext(getThread());
 							return Status.CANCEL_STATUS;
 						}
 					}
@@ -1102,6 +1119,7 @@ public class ConnectionProfile extends PlatformObject implements
 			catch (OperationCanceledException e) {
 				// TODO: RJC: This puts us in a weird state, should we recreate
 				// any connections that were closed
+				ContextProvider.disposeContext(getThread());
 				return Status.CANCEL_STATUS;
 			}
 			catch (InterruptedException e) {
@@ -1151,6 +1169,7 @@ public class ConnectionProfile extends PlatformObject implements
 			}
 
 			monitor.done();
+			ContextProvider.disposeContext(getThread());
 
 			return retVal;
 		}
@@ -1206,6 +1225,8 @@ public class ConnectionProfile extends PlatformObject implements
 
 	public class WorkOfflineJob extends Job {
 
+		private ServiceContext ctx;
+
 		/**
 		 * 
 		 */
@@ -1216,6 +1237,8 @@ public class ConnectionProfile extends PlatformObject implements
 			setUser(true);
 			setSystem(false);
 			setRule(new ProfileRule(ConnectionProfile.this));
+			
+			ctx = ContextUtil.createFakeContext(ContextProvider.getUISession());
 		}
 
 		/*
@@ -1227,6 +1250,8 @@ public class ConnectionProfile extends PlatformObject implements
 			if (getConnectionState() == WORKING_OFFLINE_STATE) {
 				return Status.OK_STATUS;
 			}
+			
+			ContextProvider.setContext(ctx, getThread());
 
 			IStatus retVal;
 
@@ -1241,6 +1266,7 @@ public class ConnectionProfile extends PlatformObject implements
 						.iterator(); it.hasNext();) {
 					if (!((ManagedConnection) it.next()).okToClose()) {
 						monitor.setCanceled(true);
+						ContextProvider.disposeContext(getThread());
 						return Status.CANCEL_STATUS;
 					}
 				}
@@ -1337,7 +1363,8 @@ public class ConnectionProfile extends PlatformObject implements
 			}
 
 			monitor.done();
-
+			ContextProvider.disposeContext(getThread());
+			
 			return retVal;
 		}
 

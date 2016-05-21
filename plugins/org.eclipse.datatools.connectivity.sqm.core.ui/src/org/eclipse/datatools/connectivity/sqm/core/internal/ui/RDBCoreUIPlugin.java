@@ -13,7 +13,6 @@ import java.net.URL;
 
 import org.eclipse.datatools.connectivity.sqm.core.internal.ui.util.CatalogTaskLabelProvider;
 import org.eclipse.datatools.connectivity.sqm.internal.core.util.CatalogUtil;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -27,7 +26,7 @@ public class RDBCoreUIPlugin extends AbstractUIPlugin
 	/**
 	 * Will keep in memory the images needed by our plugin
 	 */
-	private ImageRegistry imageRegistry;
+    // private ImageRegistry imageRegistry;
 
 	/**
 	 * @param descriptor
@@ -49,11 +48,11 @@ public class RDBCoreUIPlugin extends AbstractUIPlugin
 	 * To use for manipulating images
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getImageRegistry()
 	 */
-	public ImageRegistry getImageRegistry ()
-	{
-		return imageRegistry;
-	}
-	
+    // public ImageRegistry getImageRegistry ()
+    // {
+    // return imageRegistry;
+    // }
+
 	/**
 	 * @return Will return the plugin ID
 	 */
@@ -79,9 +78,9 @@ public class RDBCoreUIPlugin extends AbstractUIPlugin
         {
             super.start(ctx);
             CatalogUtil.setDefaultCatalogTaskLabelProvider(new CatalogTaskLabelProvider());
-            imageRegistry = this.createImageRegistry();
-        }
-        catch (Throwable e)
+            // imageRegistry = this.createImageRegistry();
+        } 
+        catch (Throwable e) 
         {
         }
 	}

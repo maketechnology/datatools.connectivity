@@ -33,7 +33,7 @@ public class ClearPlaceHolderJob extends UIJob
 
 	public ClearPlaceHolderJob(AbstractTreeViewer viewer, LoadingNode placeHolder, Object parent, Object[] children)
 	{
-		super(REMOVING_PLACE_HOLDER);
+		super(viewer.getControl().getDisplay(), REMOVING_PLACE_HOLDER);
 		this.viewer = viewer;
 		this.placeHolder = placeHolder;
 		this.unconvertedParent = parent;

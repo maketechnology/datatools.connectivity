@@ -22,6 +22,8 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.internal.ui.ConnectivityUIPlugin;
 import org.eclipse.datatools.connectivity.internal.ui.dialogs.ExceptionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.progress.UIJob;
 
@@ -60,7 +62,7 @@ public class PingJob extends Job {
 
 		monitor.done();
 
-		new PingUIJob( shell, getTestConnectionException( con ) )
+        new PingUIJob(LifeCycleUtil.getSessionDisplay(), shell, getTestConnectionException(con))
 				.schedule();
 		
 		if( con != null )
@@ -91,8 +93,8 @@ public class PingJob extends Job {
 		/**
 		 * @param name
 		 */
-		public PingUIJob(Shell shell, Throwable exception) {
-			super(ConnectivityUIPlugin.getDefault().getResourceString(
+        public PingUIJob(Display display, Shell shell, Throwable exception) {
+            super(shell.getDisplay(), ConnectivityUIPlugin.getDefault().getResourceString(
 					"actions.ping.uijob")); //$NON-NLS-1$
 			setSystem(false);
 			this.exception = exception;

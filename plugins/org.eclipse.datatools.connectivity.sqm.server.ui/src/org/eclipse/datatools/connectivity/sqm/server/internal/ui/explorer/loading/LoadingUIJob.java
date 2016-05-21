@@ -24,7 +24,7 @@ public class LoadingUIJob extends UIJob
 
 	public LoadingUIJob(StructuredViewer viewer, LoadingNode placeHolder)
 	{
-		super(placeHolder.getText(placeHolder));
+		super(viewer.getControl().getDisplay(), placeHolder.getText(placeHolder));
 		this.viewer = viewer;
 		this.placeHolder = placeHolder;
 		setSystem(true);

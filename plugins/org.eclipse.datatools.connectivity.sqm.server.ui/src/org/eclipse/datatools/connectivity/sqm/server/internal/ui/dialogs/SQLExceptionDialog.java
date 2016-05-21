@@ -9,7 +9,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IconAndMessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.Clipboard;
+//import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionEvent;
@@ -57,7 +57,7 @@ public class SQLExceptionDialog extends IconAndMessageDialog
 
     private Button detailsButton;
     private IStatus status;
-    private Clipboard clipboard;
+//    private Clipboard clipboard;
 
     private void populateList(List listToPopulate)
     {
@@ -129,12 +129,12 @@ public class SQLExceptionDialog extends IconAndMessageDialog
 
     private void copyToClipboard()
     {
-        if (clipboard != null)
-            clipboard.dispose();
+//        if (clipboard != null)
+//            clipboard.dispose();
         StringBuffer statusBuffer = new StringBuffer();
         populateCopyBuffer(status, statusBuffer, 0);
-        clipboard = new Clipboard(list.getDisplay());
-        clipboard.setContents(new Object[] { statusBuffer.toString() }, new Transfer[] { TextTransfer.getInstance() });
+//        clipboard = new Clipboard(list.getDisplay());
+//        clipboard.setContents(new Object[] { statusBuffer.toString() }, new Transfer[] { TextTransfer.getInstance() });
     }
     protected void configureShell(Shell shell)
     {
@@ -288,10 +288,10 @@ public class SQLExceptionDialog extends IconAndMessageDialog
 
     public boolean close()
     {
-        if (clipboard != null)
-        {
-            clipboard.dispose();
-        }
+//        if (clipboard != null)
+//        {
+//            clipboard.dispose();
+//        }
         return super.close();
     }
 }
