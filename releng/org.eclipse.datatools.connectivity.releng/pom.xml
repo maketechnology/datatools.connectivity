@@ -15,13 +15,14 @@
 	</parent>
 
 	<modules>
-		<!--module>../../plugins/org.eclipse.datatools.connectivity.sqm.core.ui</module-->
+		<module>../../plugins/org.eclipse.datatools.connectivity.sqm.core.ui</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity.sqm.core</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity.sqm.server.ui</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity.ui.dse</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity.ui</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity</module>
 		<module>../../plugins/org.eclipse.datatools.connectivity.dbdefinition.genericJDBC</module>
+		<module>../../plugins/org.eclipse.datatools.sqltools.data.ui</module>
 		<!--module>../../plugins/org.eclipse.datatools.connectivity.console.profile</module-->
 	</modules>
 </project>

@@ -1,13 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2004-2005, 2008 Sybase, Inc. and others.
- * 
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
+ *
+ * All rights reserved. This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: shongxum - initial API and implementation
- *               IBM Corporation - fix for 238315
+ *
+ * Contributors: shongxum - initial API and implementation IBM Corporation - fix for 238315
  ******************************************************************************/
 package org.eclipse.datatools.connectivity.ui.actions;
 
@@ -35,6 +33,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.SameShellProvider;
+import org.eclipse.rap.rwt.internal.lifecycle.LifeCycleUtil;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -48,19 +47,18 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 
 	private IStructuredSelection mSelection = null;
 	private Shell mShell;
-	
+
 	/**
-	 * This method blocks until the connection has been created.
-	 * 
-	 * @param profile
-	 * @param viewer
-	 * 
-	 * @deprecated use IConnectionProfile.connect(). The caller is now
-	 *             responsible for updating their view themselves. Note, if you
-	 *             are using a servers viewer, you should not need to update the
-	 *             view as the view listens for connect events and updates
-	 *             itself.
-	 */
+     * This method blocks until the connection has been created.
+     *
+     * @param profile
+     * @param viewer
+     *
+     * @deprecated use IConnectionProfile.connect(). The caller is now responsible for updating
+     *             their view themselves. Note, if you are using a servers viewer, you should not
+     *             need to update the view as the view listens for connect events and updates
+     *             itself.
+     */
 	public static void connectAndRefresh(IConnectionProfile profile,
 			TreeViewer viewer) {
 		profile.connect();
@@ -81,7 +79,7 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 	 */
 	public static Job connect(IConnectionProfile profile,
 			ITreeContentProvider contentProvider) {
-		Job connectJob = ((ConnectionProfile) profile).new ConnectJob();
+        Job connectJob = ((ConnectionProfile) profile).new ConnectJob(LifeCycleUtil.getSessionDisplay());
 		connectJob.schedule();
 		return connectJob;
 	}
@@ -100,16 +98,16 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     */
 	public void run(IAction action) {
 		if (mSelection != null && allProfilesInSelectionAreDisconnected(mSelection)) {
 			List list = mSelection.toList();
-			if (list == null || list.size() == 0) 
+            if (list == null || list.size() == 0)
 				return;
-			
+
 			for (int i = 0; i < list.size(); i++) {
 				PropertyDialogAction propertyDialogAction = new PropertyDialogAction(
 						new SameShellProvider(mShell), this);
@@ -149,12 +147,12 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 		}
 		action.setEnabled(flag && allAreDisconnected);
 	}
-	
+
 	private boolean checkSelectionForProfiles ( IStructuredSelection selection ) {
 		List list = selection.toList();
-		if (list == null || list.size() == 0) 
+        if (list == null || list.size() == 0)
 			return false;
-		
+
 		for (int i = 0; i < list.size(); i++) {
 			if (!(list.get(i) instanceof IConnectionProfile)) {
 				return false;
@@ -162,12 +160,12 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 		}
 		return true;
 	}
-	
+
 	private boolean allProfilesInSelectionAreDisconnected ( IStructuredSelection selection ) {
 		List list = selection.toList();
-		if (list == null || list.size() == 0) 
+        if (list == null || list.size() == 0)
 			return false;
-		
+
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof IConnectionProfile) {
 				IConnectionProfile profile = (IConnectionProfile) list.get(i);
@@ -191,7 +189,7 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 	public void setSelection(ISelection selection) {
 		this.mSelection = (IStructuredSelection)selection;
 	}
-	
+
 	protected String getInitialPropertyPageID(IConnectionProfile profile) {
 		if (!profile.arePropertiesComplete(profile.getProviderId())) {
 			return ((ConnectionProfileProvider)profile.getProvider()).getPropertiesPersistenceHook().getConnectionPropertiesPageID();
@@ -209,14 +207,14 @@ public class ConnectAction implements IObjectActionDelegate, ISelectionProvider 
 }
 
 class ConnectActionStatusListener extends JobChangeAdapter
-{	
+{
 	private IConnectionProfile profile;
-	
+
 	public ConnectActionStatusListener(IConnectionProfile profile)
 	{
 		this.profile = profile;
 	}
-	
+
 	public void done(IJobChangeEvent event) {
 		IStatus result = event.getResult();
 		if (result.getSeverity() == IStatus.ERROR && profile instanceof ConnectionProfile) {

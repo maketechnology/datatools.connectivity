@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.ui;resolution:=optional,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.help,
  org.eclipse.datatools.help,
- org.eclipse.rap.ui.forms;bundle-version="3.0.2";resolution:=optional
+ org.eclipse.rap.ui.forms;bundle-version="3.0.2";resolution:=optional,
+ org.eclipse.ui.ide
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.datatools.connectivity.ui.dse,

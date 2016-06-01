@@ -1,16 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2006-2009 Sybase, Inc.
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    rcernich - initial API and implementation
- *    brianf - updates to set state of ShowCategory handler
- *    brianf - fixes for BZ 272274
- *******************************************************************************/ 
+ * Contributors: rcernich - initial API and implementation brianf - updates to set state of
+ * ShowCategory handler brianf - fixes for BZ 272274
+ *******************************************************************************/
 package org.eclipse.datatools.connectivity.ui.dse.views;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -22,17 +19,21 @@ import org.eclipse.datatools.help.ContextProviderDelegate;
 import org.eclipse.help.IContext;
 import org.eclipse.help.IContextProvider;
 import org.eclipse.jface.commands.ToggleState;
+import org.eclipse.jface.viewers.NavigatorDecoratingLabelProvider;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.internal.navigator.NavigatorContentService;
 import org.eclipse.ui.navigator.CommonNavigator;
+import org.eclipse.ui.navigator.CommonViewer;
 
 public class DataSourceExplorerView extends CommonNavigator
 	implements IContextProvider {
-	
+
 	private ContextProviderDelegate contextProviderDelegate =
 		new ContextProviderDelegate(DSEPlugin.getDefault().getBundle().getSymbolicName());
-	
+
 	/**
 	 * Constructor
 	 */
@@ -41,11 +42,10 @@ public class DataSourceExplorerView extends CommonNavigator
 	}
 
 	/**
-	 * Override this to provide a different input object to the DSE,
-	 * This used to override the getInitialInput() from the CommonNavigator
-	 * but the signature changed for 3.5 and we ran into some weird 
-	 * JDK 1.4/1.5 incompatibilities with the changes. 
-	 * See BZ 272274 for more details.
+	 * Override this to provide a different input object to the DSE, This used to override the
+	 * getInitialInput() from the CommonNavigator but the signature changed for 3.5 and we ran into
+	 * some weird JDK 1.4/1.5 incompatibilities with the changes. See BZ 272274 for more details.
+	 *
 	 * @return IAdaptable
 	 */
 	protected IAdaptable getDSEInitialInput() {
@@ -79,21 +79,21 @@ public class DataSourceExplorerView extends CommonNavigator
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getCommonViewer().getTree(), IHelpContextsConnectivityUIDSE.CONTEXT_ID_CONNECTIVITY_DSE_VIEW);
-		
+
 		// added for BZ 272274, BTF
 		try {
 			getCommonViewer().getControl().setRedraw(false);
-			getCommonViewer().setInput(getDSEInitialInput()); 
-		} finally { 
+			getCommonViewer().setInput(getDSEInitialInput());
+		} finally {
 			getCommonViewer().getControl().setRedraw(true);
-		}	
-		
+		}
+
 		createHandlers();
 	}
-	
-	/**
-	 * creates the initial show category handler
-	 */
+
+    /**
+     * creates the initial show category handler
+     */
 	private void createHandlers() {
 
 		// set the initial state of the ShowCategory menu & toolbar button
@@ -101,10 +101,29 @@ public class DataSourceExplorerView extends CommonNavigator
 				.getService(IHandlerService.class);
 		ShowCategoryAction handler = new ShowCategoryAction();
 		handler.init(this);
-		handlerService.activateHandler(ShowCategoryAction.HANDLER_ID, 
+		handlerService.activateHandler(ShowCategoryAction.HANDLER_ID,
 				handler);
 		ToggleState ts = new ToggleState();
 		ts.setValue(Boolean.TRUE);
 		handler.addState("STYLE", ts); //$NON-NLS-1$
 	}
+
+    @Override
+	protected CommonViewer createCommonViewer(Composite aParent) {
+		CommonViewer commonViewer = new CommonViewer(getViewSite().getId(), aParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		NavigatorContentService contentService = new NavigatorContentService(getViewSite().getId(), commonViewer);
+		commonViewer.setUseHashlookup(true);
+		commonViewer.setContentProvider(contentService.createCommonContentProvider());
+		commonViewer.setLabelProvider(new NavigatorDecoratingLabelProvider(contentService.createCommonLabelProvider()));
+		return commonViewer;
+	};
+
+
+	// protected void init() {
+	// setUseHashlookup(true);
+	// setContentProvider(contentService.createCommonContentProvider());
+	// super.setLabelProvider(new
+	// NavigatorDecoratingLabelProvider(contentService.createCommonLabelProvider()));
+	//
+	// }
 }
